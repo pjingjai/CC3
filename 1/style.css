@@ -1,0 +1,33 @@
+fieldset {
+    border:1px solid black;
+    text-align: center;
+    padding-top: 12px;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 20px;
+    text-align:left;
+}
+
+#labels {
+    float:left;
+    text-align: left;
+    margin-left: 16%
+}
+
+#fields {
+    float: right;
+    text-align: left;
+    margin-right: 16%
+}
+
+#fields input {
+    height: 8px;
+}
+
+#control {
+    margin-top: 180px;
+}
