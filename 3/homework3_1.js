@@ -2,7 +2,7 @@ fetch('homework2_1.json').then(response => {
    return response.json();
 })
    .then(myJson => {
-      let employees = myJson;
+      employees = myJson;
    })
    .catch(error => {
       console.error('Error:', error);
@@ -25,11 +25,11 @@ function addAdditionalFields(array) {
       addYearSalary(array[i]);
       addNextSalary(array[i]);
    }
-   return employees;
+   return array;
 }
 
 function toNumber(row, property) {
-   if (typeof(row[property]) === 'string')
+   if (typeof (row[property]) === 'string')
       row[property] = parseFloat(row[property]);
    return row[property];
 }

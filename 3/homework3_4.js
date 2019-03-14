@@ -3,16 +3,18 @@ function clone(obj) {
         return obj;
     }
 
-    let newObj = {};
     if (obj instanceof Array) {
-        for (i in obj) {
-            newObj[i] = clone(obj[i]);
+        let newArr = [];
+        for (let i in obj) {
+            newArr[i] = clone(obj[i]);
         }
+        return newArr;
     }
      else {
-        for (i in obj) {
+        let newObj = {};
+        for (let i in obj) {
             newObj[i] = clone(obj[i]);
         }
+        return newObj;
     }
-    return newObj;
 }
