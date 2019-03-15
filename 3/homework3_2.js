@@ -1,15 +1,80 @@
+let employees;
+let newEmployees;
+
 fetch('homework2_1.json').then(response => {
-        return response.json();
-    })
+    return response.json();
+})
     .then(myJson => {
         employees = myJson;
         //แปลง salary จาก string เป็น number
         iterate(employees, 'salary', toNumber);
         return employees;
     })
+    .then(employees => {
+        newEmployees = addAdditionalFields(employees);
+    })
     .catch(error => {
         console.error('Error:', error);
     });
+
+//display employees table
+$(function () {
+    //create field name row
+    $('#people').append("<tr id=\"header1\"></tr>");
+
+    //create record rows
+    for (e in employees) {
+        $('#people').append(`<tr id="record1_${e}"></tr>`);
+    }
+
+    //append field names
+    for (field in employees[0]) {
+        $('#header1').append(`<th>${field}</th>`);
+    }
+
+    //append record values
+    for (i = 0; i < employees.length; i++) {
+        for (field in employees[0]) {
+            $(`#record1_${i}`).append(`<td>${employees[i][field]}</td>`);
+        }
+    }
+
+});
+
+//display newEmployees table
+$(function () {
+    //create field name row
+    $('#newPeople').append("<tr id=\"header2\"></tr>");
+
+    //create record rows
+    for (e in newEmployees) {
+        $('#newPeople').append(`<tr id="record2_${e}"></tr>`);
+    }
+
+    //append field names
+    for (field in newEmployees[0]) {
+        $('#header2').append(`<th>${field}</th>`);
+    }
+
+    //append record values
+    for (i = 0; i < newEmployees.length; i++) {
+        for (field in newEmployees[0]) {
+            if (field !== 'nextSalary'){
+                $(`#record2_${i}`).append(`<td>${newEmployees[i][field]}</td>`);
+             } else {
+                $(`#record2_${i}`).append("<td><ol type='1'>");
+                for (l in newEmployees[i][field]) {
+                    $(`#record2_${i} ol`).append(`<li>${newEmployees[i][field][l]}</li>`);
+                }
+                $(`#record2_${i}`).append("</ol></td>");
+            }
+                
+        }
+    }
+
+});
+
+//----------------------------------------
 
 function addAdditionalFields(array) {
     let clonedArray = clone(array);
