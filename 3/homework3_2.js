@@ -23,18 +23,18 @@ $(function () {
     $('#people').append("<tr id=\"header1\"></tr>");
 
     //create record rows
-    for (e in employees) {
+    for (let e in employees) {
         $('#people').append(`<tr id="record1_${e}"></tr>`);
     }
 
     //append field names
-    for (field in employees[0]) {
+    for (let field in employees[0]) {
         $('#header1').append(`<th>${field}</th>`);
     }
 
     //append record values
-    for (i = 0; i < employees.length; i++) {
-        for (field in employees[0]) {
+    for (let i = 0; i < employees.length; i++) {
+        for (let field in employees[0]) {
             $(`#record1_${i}`).append(`<td>${employees[i][field]}</td>`);
         }
     }
@@ -47,23 +47,23 @@ $(function () {
     $('#newPeople').append("<tr id=\"header2\"></tr>");
 
     //create record rows
-    for (e in newEmployees) {
+    for (let e in newEmployees) {
         $('#newPeople').append(`<tr id="record2_${e}"></tr>`);
     }
 
     //append field names
-    for (field in newEmployees[0]) {
+    for (let field in newEmployees[0]) {
         $('#header2').append(`<th>${field}</th>`);
     }
 
     //append record values
-    for (i = 0; i < newEmployees.length; i++) {
-        for (field in newEmployees[0]) {
+    for (let i = 0; i < newEmployees.length; i++) {
+        for (let field in newEmployees[0]) {
             if (field !== 'nextSalary'){
                 $(`#record2_${i}`).append(`<td>${newEmployees[i][field]}</td>`);
              } else {
                 $(`#record2_${i}`).append("<td><ol type='1'>");
-                for (l in newEmployees[i][field]) {
+                for (let l in newEmployees[i][field]) {
                     $(`#record2_${i} ol`).append(`<li>${newEmployees[i][field][l]}</li>`);
                 }
                 $(`#record2_${i}`).append("</ol></td>");
@@ -106,7 +106,7 @@ function toNumber(row, property) {
 }
 
 iterate = (array, property, func) => {
-    for (i in array) {
+    for (let i in array) {
         func(array[i], property);
     }
     return array;

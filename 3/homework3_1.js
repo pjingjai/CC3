@@ -7,37 +7,50 @@ fetch('homework2_1.json').then(response => {
        employees = myJson;
        //แปลง salary จาก string เป็น number
        iterate(employees, 'salary', toNumber);
+       addAdditionalFields(employees);
        return employees;
    })
    .catch(error => {
        console.error('Error:', error);
    });
 
-//display employees table
 $(function () {
    //create field name row
-   $('#people').append("<tr id=\"header1\"></tr>");
+   $('#people').append("<tr id=\"header\"></tr>");
 
    //create record rows
-   for (e in employees) {
-       $('#people').append(`<tr id="record1_${e}"></tr>`);
+   for (let e in employees) {
+       $('#people').append(`<tr id="record${e}"></tr>`);
    }
 
    //append field names
-   for (field in employees[0]) {
-       $('#header1').append(`<th>${field}</th>`);
+   for (let field in employees[0]) {
+       $('#header').append(`<th>${field}</th>`);
    }
 
    //append record values
-   for (i = 0; i < employees.length; i++) {
-       for (field in employees[0]) {
-           $(`#record1_${i}`).append(`<td>${employees[i][field]}</td>`);
+   for (let i = 0; i < employees.length; i++) {
+       for (let field in employees[0]) {
+           if (field !== 'nextSalary'){
+               $(`#record${i}`).append(`<td>${employees[i][field]}</td>`);
+            } else {
+               $(`#record${i}`).append("<td><ol type='1'>");
+               for (let l in employees[i][field]) {
+                   $(`#record${i} ol`).append(`<li>${employees[i][field][l]}</li>`);
+               }
+               $(`#record${i}`).append("</ol></td>");
+           }
+               
        }
    }
 
 });
 
 //--------------------------------------
+
+function addYearSalary(row) {
+   return row.yearSalary = row.salary * 12;
+}
 
 function addNextSalary(row) {
    let salary = parseFloat(row.salary);
@@ -48,7 +61,7 @@ function addNextSalary(row) {
 }
 
 function addAdditionalFields(array) {
-   for (i in array) {
+   for (let i in array) {
       addYearSalary(array[i]);
       addNextSalary(array[i]);
    }
@@ -62,7 +75,7 @@ function toNumber(row, property) {
 }
 
 iterate = (array, property, func) => {
-   for (i in array) {
+   for (let i in array) {
       func(array[i], property);
    }
    return array;
