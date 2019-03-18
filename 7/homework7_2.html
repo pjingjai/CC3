@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            border: 1px solid black;
+        }
+        td, th {
+            border: 1px double black;
+        }
+        #sum {
+            border: 1px double black;
+        }
+        span {
+            margin-left: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="people">
+        <tr id='header'>
+            <th>id</th>
+            <th>firstname</th>
+            <th>lastname</th>
+            <th>company</th>
+            <th>salary</th>
+        </tr>
+        <tr id='record1'>
+            <td id='c1'></td>
+            <td id='c2'></td>
+            <td id='c3'></td>
+            <td id='c4'></td>
+            <td id='c5'></td>
+        </tr>
+        <tr id='record2'></tr>
+            <td id='c6'></td>
+            <td id='c7'></td>
+            <td id='c8'></td>
+            <td id='c9'></td>
+            <td id='c10'></td>
+        <tr id='sum'></tr>
+    </table>
+</body>
+
+</html>
+
+<script>
+    let peopleSalary;
+    let peopleLowSalary;
+    let sumSalary;
+
+    fetch('homework2_1.json').then(response => {
+            return response.json();
+        })
+        .then(myJson => {
+            peopleSalary = myJson;
+            peopleSalary = peopleSalary.map(obj => {
+                obj.salary = parseFloat(obj.salary);
+                return obj;
+            });
+            return peopleSalary;
+        })
+        .then(peopleSalary => {
+            peopleLowSalary = peopleSalary
+                .filter(obj => obj.salary < 100000)
+                .map(obj => {
+                    obj.salary *= 2;
+                    return obj;
+                });
+
+            sumSalary = peopleSalary
+                .filter(obj => obj.salary > 100000)
+                .map(obj => obj.salary)
+                .reduce((acc, cur) => acc + cur, 0) +
+                peopleLowSalary
+                .map(obj => obj.salary)
+                .reduce((acc, cur) => acc + cur, 0);
+        })
+        .then(() => {
+
+            peopleLowSalary.forEach((element, index) => {
+                document.getElementById(`c${1 + (index * 5)}`).innerHTML = element.id;
+                document.getElementById(`c${2 + (index * 5)}`).innerHTML = element.firstname;
+                document.getElementById(`c${3 + (index * 5)}`).innerHTML = element.lastname;
+                document.getElementById(`c${4 + (index * 5)}`).innerHTML = element.company;
+                document.getElementById(`c${5 + (index * 5)}`).innerHTML = element.salary;
+            });
+            document.getElementById('sum').innerHTML = `<span>sumSalary:${sumSalary}</span>`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+</script>
