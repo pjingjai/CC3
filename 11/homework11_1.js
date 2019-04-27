@@ -41,7 +41,7 @@ router.get('/', async ctx => {
 });
 //---------
 router.get('/from_database', async ctx => {
-    ctx.body = ctx.data.rows;
+    ctx.body = ctx.dbData;
 });
 //-----------
 router.get('/from_file', async ctx => {
@@ -70,7 +70,7 @@ async function myMiddleware(ctx, next) {
     newObj.additionalData.userId = 1;
     newObj.additionalData.dateTime = 
         `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    ctx.data.rows = newObj;
+    ctx.dbData = newObj;
 
     let newFile = {
         data: [],
