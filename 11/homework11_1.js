@@ -59,17 +59,40 @@ function read() {
     });
 }
 
-async function myMiddleware(ctx, next) {
+function makeDateTime() {
     let date = new Date();
+    let month, day, hours, minutes, seconds;
+    month = String(date.getMonth());
+    if (month.length == 1) {
+        month = '0' + month;
+    }
+    day = String(date.getDate());
+    if (day.length == 1) {
+        day = '0' + day;
+    }
+    hours = String(date.getHours());
+    if (hours.length == 1) {
+        hours = '0' + hours;
+    }
+    minutes = String(date.getMinutes());
+    if (minutes.length == 1) {
+        minutes = '0' + minutes;
+    }
+    seconds = String(date.getSeconds());
+    if (seconds.length == 1) {
+        seconds = '0' + seconds;
+    }
+    return `${date.getFullYear()}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
+async function myMiddleware(ctx, next) {
     let newObj = {
         data: [],
         additionalData: {}
     };
     newObj.data = ctx.data.rows;
     newObj.additionalData.userId = 1;
-    newObj.additionalData.dateTime = 
-        `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    newObj.additionalData.dateTime = makeDateTime();
     ctx.dbData = newObj;
 
     let newFile = {
@@ -78,8 +101,7 @@ async function myMiddleware(ctx, next) {
     };
     newFile.data = await read();
     newFile.additionalData.userId = 1;
-    newFile.additionalData.dateTime = 
-        `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    newFile.additionalData.dateTime = makeDateTime();
     ctx.fileData = newFile;
     await next();
 }
