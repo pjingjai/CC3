@@ -61,9 +61,11 @@ function read() {
 
 function makeDateTime() {
     let date = new Date();
-    let month, day, hours, minutes, seconds;
+    let year, month, day, hours, minutes, seconds;
+
+    year = String(date.getFullYear());
     month = String(date.getMonth());
-    if (month.length == 1) {
+    if (month.length === 1) {
         month = '0' + month;
     }
     day = String(date.getDate());
@@ -71,18 +73,18 @@ function makeDateTime() {
         day = '0' + day;
     }
     hours = String(date.getHours());
-    if (hours.length == 1) {
+    if (hours.length === 1) {
         hours = '0' + hours;
     }
     minutes = String(date.getMinutes());
-    if (minutes.length == 1) {
+    if (minutes.length === 1) {
         minutes = '0' + minutes;
     }
     seconds = String(date.getSeconds());
-    if (seconds.length == 1) {
+    if (seconds.length === 1) {
         seconds = '0' + seconds;
     }
-    return `${date.getFullYear()}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 async function myMiddleware(ctx, next) {
@@ -90,7 +92,7 @@ async function myMiddleware(ctx, next) {
         data: [],
         additionalData: {}
     };
-    newObj.data = ctx.data.rows;
+    newObj.data = clone(ctx.data.rows);
     newObj.additionalData.userId = 1;
     newObj.additionalData.dateTime = makeDateTime();
     ctx.dbData = newObj;
@@ -99,11 +101,32 @@ async function myMiddleware(ctx, next) {
         data: [],
         additionalData: {}
     };
-    newFile.data = await read();
+    newFile.data = clone(await read());
     newFile.additionalData.userId = 1;
     newFile.additionalData.dateTime = makeDateTime();
     ctx.fileData = newFile;
     await next();
+}
+
+function clone(obj) {
+    if (typeof obj !== 'object') {
+        return obj;
+    }
+
+    if (obj instanceof Array) {
+        let newArr = [];
+        for (let i in obj) {
+            newArr[i] = clone(obj[i]);
+        }
+        return newArr;
+    }
+     else {
+        let newObj = {};
+        for (let i in obj) {
+            newObj[i] = clone(obj[i]);
+        }
+        return newObj;
+    }
 }
 
 app.use(myMiddleware);
