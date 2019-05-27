@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fb</title>
+
+    <script>
+        // window.fbAsyncInit = function () {
+        //     FB.init({
+        //         appId: '{your-app-id}',
+        //         cookie: true,
+        //         xfbml: true,
+        //         version: '{api-version}'
+        //     });
+
+        //     FB.AppEvents.logPageView();
+
+        // };
+        window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '713195102468831',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.3'
+    });
+
+    FB.AppEvents.logPageView();   
+      
+  };
+
+        // (function (d, s, id) {
+        //     var js, fjs = d.getElementsByTagName(s)[0];
+        //     if (d.getElementById(id)) {
+        //         return;
+        //     }
+        //     js = d.createElement(s);
+        //     js.id = id;
+        //     js.src = "https://connect.facebook.net/en_US/sdk.js";
+        //     fjs.parentNode.insertBefore(js, fjs);
+        // }(document, 'script', 'facebook-jssdk'));
+        (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+</head>
+
+<body>
+
+    <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button> -->
+    <fb:login-button 
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
+
+</body>
+
+</html>
+
+<script>
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            console.log(response);
+            console.log(response.authResponse.accessToken);
+            if (response.status == 'connected') {
+                console.log('login success!!');
+                FB.api("/me?fields=id,first_name,last_name,email", function (res) {
+                    console.log(res)
+                    fetch('/',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(res),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    }).then(function(response) {
+                        console.log(response)
+                        return response;
+                    }).catch(error => console.error(error))
+                })
+            }
+            else
+                console.log('Have not logged in yet');
+
+        });
+    }
+
+</script>
