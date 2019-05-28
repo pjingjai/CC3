@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Table</title>
+</head>
+<body>
+    <% 
+        const efieldnames = [];
+        efields.forEach(element => {
+            efieldnames.push(element['name']);
+        });
+
+        const bfieldnames = [];
+        bfields.forEach(element => {
+            bfieldnames.push(element['name']);
+        });
+    %>
+    <table>
+        <th>
+            <% efieldnames.forEach(name => { %>
+                <td><%= name %></td>
+            <% }); %>
+        </th>        
+    <% erows.forEach(row => { %>
+        <tr>
+            <% Object.keys(row).forEach(prop => { %>
+                <td><%= row[prop] %></td>
+            <% }); %>
+        </tr>
+    <% }); %> 
+    </table>
+
+    <table>
+        <th>
+            <% bfieldnames.forEach(name => { %>
+                <td><%= name %></td>
+            <% }); %>
+        </th>        
+    <% brows.forEach(row => { %>
+        <tr>
+            <% Object.keys(row).forEach(prop => { %>
+                <td><%= row[prop] %></td>
+            <% }); %>
+        </tr>
+    <% }); %> 
+    </table>
+</body>
+</html>

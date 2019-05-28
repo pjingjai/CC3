@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .feedback {
+            visibility: hidden;
+        }
+        #email-feedback {
+            color: red;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+</head>
+
+<body>
+        <input type="text" id="email">
+        <div>
+            <span id="email-feedback" class="feedback">Email is not valid format</span>
+        </div>
+        <button id="submit">submit</button>
+</body>
+
+</html>
+
+<script>
+    let re = new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[\.][A-Za-z]{2,63}$');
+    $(function () {
+        $('#submit').on('click', function() {
+            let inputText = $('#email').val();
+            if (re.test(inputText) && inputText.match(re)[0] === $('#email').val()) {
+                //ทำ
+                $('#email-feedback').addClass('feedback');
+            } else {
+                //show feedback
+                $('#email-feedback').removeClass('feedback');
+            }
+        });
+    });
+</script>
